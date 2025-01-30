@@ -42,7 +42,7 @@ const int buttonLinePinsCount = 7;
 volatile bool wakeUpFlag = false;  // Flag to indicate wake-u
 
 RF24 radio(CE_PIN, CSN_PIN);  // CE, CSN pins
-const byte address[6] = "00001";  // Address for communication
+const byte address[6] = "30012";  // Address for communication
 
 // Define a unique ID for this remote controller in HEX
 const unsigned long remoteID = 0xA1B2C3D4;  // Example: Remote ID in hexadecimal
