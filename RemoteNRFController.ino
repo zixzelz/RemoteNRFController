@@ -28,6 +28,7 @@
 
 #define CE_PIN 10
 #define CSN_PIN 9
+#define LED_PIN A5
 
 const uint8_t buttonPinBus_0 = A0;
 const uint8_t buttonPinBus_1 = A1;
@@ -61,6 +62,9 @@ void setup() {
   for (int i = 0; i < 20; i++) {
     pinMode(i, INPUT_PULLUP);  // For unused pins
   }
+
+  pinMode(LED_PIN, OUTPUT);  // For LED_PIN, for my case 700 uA
+  turnOffLed();
 
   for (int i = 0; i < 3; i++) {
     pinMode(buttonBusPins[i], OUTPUT);
@@ -134,6 +138,14 @@ void sendButtonPress(int buttonIndex) {
   DEBUG_PRINT(" - Button ");
   DEBUG_PRINT(buttonIndex);
   DEBUG_PRINTLN(success ? " Sent Successfully" : " Failed to Send");
+}
+
+void turnOnLed() {
+  digitalWrite(LED_PIN, HIGH);
+}
+
+void turnOffLed() {
+  digitalWrite(LED_PIN, LOW);
 }
 
 //
@@ -261,7 +273,11 @@ int readSelectedButton() {
   #endif
 
   if (selectedLinePin != -1) {
+    turnOnLed(); // not the best place, but I do not want to turn on led during transmission to decrease peak consumption
+
     selectedBus = readSelectedBusWithPin(selectedLinePin);  // Create a mask for buttonBusPins (assuming they are on PORTC)
+
+    turnOffLed();
 
     #ifdef DEBUG
     selectedBusMs = micros() - start;
